@@ -19,6 +19,12 @@ class TaskServiceTest {
     @InjectMocks
     TaskService taskService;
 
+    // Start using when refactoring
+//    @BeforeEach
+//    void setUp() {
+////        MockitoAnnotations.openMocks(this);
+//    }
+
     @Test
     void shouldSaveNewTask() {
         // Arrange

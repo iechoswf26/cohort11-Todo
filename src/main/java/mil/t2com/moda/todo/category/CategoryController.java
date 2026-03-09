@@ -26,4 +26,9 @@ public class CategoryController {
         return null;
     }
 
+    // ADD with Tests for: GetById, Put, Delete
+
+    // Example
+    //@GetMapping("/{categoryId}")
+
 }

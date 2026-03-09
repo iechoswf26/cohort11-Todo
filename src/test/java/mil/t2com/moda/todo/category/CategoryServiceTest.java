@@ -18,6 +18,12 @@ class CategoryServiceTest {
     @InjectMocks
     CategoryService categoryService;
 
+    // Start using when refactoring
+//    @BeforeEach
+//    void setUp() {
+    ////        MockitoAnnotations.openMocks(this);
+//    }
+
     @Test
     void shouldSaveNewCategory() {
         // Arrange

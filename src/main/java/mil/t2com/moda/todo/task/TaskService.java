@@ -20,4 +20,6 @@ public class TaskService {
     public List<Task> findAllTasks() {
         return taskRepository.findAll();
     }
+
+    // ADD with Tests for: GetById, Put, Delete
 }

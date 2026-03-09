@@ -14,4 +14,6 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    // ADD with Tests for: GetById, Put, Delete
+
 }

@@ -5,4 +5,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
+
+    // Example of a JPA word query
+    // Optional<Task> findByCategoryOrId(Category category, Long id);
 }
