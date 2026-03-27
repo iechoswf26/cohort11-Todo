@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -115,10 +116,10 @@ class CategoryControllerTest {
     }
 
     @Test
-    void shouldFindCategoryByLabelAsPathParam() throws Exception {
+    void shouldFindCategoryByLabelAsQueryParam() throws Exception {
         // Act
-        mockMvc.perform(get("/api/v1/category")
-                        .param("categoryLabel", "Normal")
+        mockMvc.perform(get("/api/v1/category/{categoryLabel}", "Normal")
+                 // Or use query parameter  .param("categoryLabel", "Normal")
                         .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.label").value("Normal"));
@@ -128,9 +129,11 @@ class CategoryControllerTest {
 
     @Test
     void shouldFindCategoryById() throws Exception {
+        Long id = 1L;
         // Act
-        mockMvc.perform(get("/api/v1/category/id/1"))
-                        //.content(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/api/v1/category/id/")
+                .param("id", id.toString())
+                .content(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.label").value("Normal"));
         // Assert

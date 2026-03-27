@@ -1,6 +1,7 @@
 package mil.t2com.moda.todo.category;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +34,10 @@ public class CategoryController {
 //    }
 
     @GetMapping("/category/{categoryLabel}")
-    public Optional<Category> findCategoryByLabelUsingPathVariable(@PathVariable String categoryLabel) {
-        return categoryService.findCategoryByLabel(categoryLabel);
+    public ResponseEntity<Category> findCategoryByLabelUsingPathVariable(@PathVariable String categoryLabel) {
+        return categoryService.findCategoryByLabel(categoryLabel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping(value = "/category/id/", params = "id")

@@ -120,6 +120,8 @@ class TaskControllerTest {
         MvcResult results = mockMvc.perform(get("/api/v1/task")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].label").value(learnHttpMethods.getLabel()));
                 .andReturn();
 
         // Deserialize JSON response into List<Task>
@@ -138,6 +140,9 @@ class TaskControllerTest {
 
     @Test
     void shouldSaveAllTasks() {
+        /*
+            Arguement Captor for List
+        */
 //        ArgumentCaptor<List<Task>> captorAll = ArgumentCaptor.forClass(List.class);
 //
 //        taskService.saveAllTasks(captorAll.capture()); // method under test
