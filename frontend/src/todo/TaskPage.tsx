@@ -1,30 +1,31 @@
 import {useEffect, useState} from 'react';
 import {TaskItem} from "./TaskItem.tsx";
 import type {Task} from "./TaskType.ts";
+import {axiosGetAllTasks, getAllTasks} from "./TaskService.ts";
 
 export const TaskPage = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
 
     const refreshData = () => {
-        const task1: Task = {'id': 1, 'title': 'First Task', 'description': 'get task component built.'};
-        const task2: Task = {'id': 2, 'title': 'Second Task', 'description': 'use new task component.'};
-        return ([task1, task2]);
-    }
+        axiosGetAllTasks().then(setTasks);
+    };
+
     useEffect(() => {
-       setTasks(refreshData());
+       refreshData();
     }, [])
 
     return (
         <>
         <h1>Task List</h1>
-            <ul>
-                {tasks.map(task => {
-                    return <TaskItem
+            <ul>{Array.isArray(tasks) ? (
+                tasks.map(task =>
+                    <TaskItem
                         key={task.id}
                         initialTask={task}
                     />
-                })}
+                )) : <div>No Tasks found.</div> }
             </ul>
+
         </>
     );
 };
