@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {TaskItem} from './TaskItem.tsx';
 import {axiosGetAllTasks} from './TaskService.ts';
 import type {Task} from './TaskType.ts';
+import {TaskForm} from "./TaskForm.tsx";
 
 export const TaskPage = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -29,6 +30,7 @@ export const TaskPage = () => {
                     <li>No Tasks found.</li>
                 )}
             </ul>
+            <TaskForm/>
         </>
     );
 };
