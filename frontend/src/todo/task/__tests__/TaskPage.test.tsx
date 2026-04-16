@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import { expect } from 'vitest';
-import { TaskPage } from '../TaskPage';
+import { TaskPage } from '../TaskPage.tsx';
 import * as taskApi from '../TaskService.ts';
 
 vi.mock('../TaskService.ts');
