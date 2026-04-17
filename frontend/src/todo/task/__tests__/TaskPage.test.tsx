@@ -1,56 +1,77 @@
-import { render, screen, within } from '@testing-library/react';
-import { expect } from 'vitest';
-import { TaskPage } from '../TaskPage.tsx';
+import {render, screen, within} from '@testing-library/react';
+import {expect} from 'vitest';
+import {TaskPage} from '../TaskPage.tsx';
 import * as taskApi from '../TaskService.ts';
 import type {Category} from "../../category/CategoryType.ts";
+import {userEvent} from "@testing-library/user-event/dist/cjs/index.js";
 
 vi.mock('../TaskService.ts');
 
-const category: Category = {id:'1', label:'testing'}
+const category: Category = {id: '1', label: 'testing'}
 const mockData = [
-  { id: 1, title: 'First Task', description: 'get task component built.', category: category },
-  { id: 2, title: 'Second Task', description: 'use new task component.', category: category },
+    {id: 1, title: 'First Task', description: 'get task component built.', category: category},
+    {id: 2, title: 'Second Task', description: 'use new task component.', category: category},
 ];
 
 describe('Task Page', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    vi.mocked(taskApi.axiosGetAllTasks).mockResolvedValue(mockData);
-  });
+    const user = userEvent.setup();
 
-  it('should display task heading', async () => {
-    render(<TaskPage />);
-    await screen.findByRole('list');
+    beforeEach(() => {
+        vi.clearAllMocks();
+        vi.mocked(taskApi.axiosGetAllTasks).mockResolvedValue(mockData);
+    });
 
-    expect(
-    screen.getByRole('heading', { name: /Task List/i }),
-    ).toBeInTheDocument();
-  });
+    it('should delete task when delete button is clicked', async () => {
+        render(<TaskPage/>);
 
-  it('should show multiple tasks', async () => {
-    render(<TaskPage />);
+        const list = await screen.findByRole('list');
 
-    // Wait for async data to render
-    const list = await screen.findByRole('list');
+        const firstItem = await within(list).findByLabelText('Task 1');
 
-    const items = within(list).getAllByRole('listitem');
+        const deleteButton = await within(firstItem).findByRole('button', {name: /delete/i});
 
-    expect(items).toHaveLength(2);
-    expect(items[0]).toHaveTextContent('First Task');
-    expect(items[1]).toHaveTextContent('Second Task');
-  });
+        expect(deleteButton).toBeInTheDocument();
 
-  it('should show multiple tasks and find the first task', async () => {
-    render(<TaskPage />);
+        await user.click(deleteButton);
 
-    // Wait for async data to render
-    const list = await screen.findByRole('list');
+        expect(firstItem).not.toBeInTheDocument();
 
-    const items = within(list).getAllByRole('listitem');
+    });
 
-    expect(items).toHaveLength(2);
+    it('should display task heading', async () => {
+        render(<TaskPage/>);
+        await screen.findByRole('list');
 
-    const firstItem = await within(list).findByLabelText('Task 1');
-    expect(firstItem).toBeInTheDocument();
-  });
+        expect(
+            screen.getByRole('heading', {name: /Task List/i}),
+        ).toBeInTheDocument();
+    });
+
+    it('should show multiple tasks', async () => {
+        render(<TaskPage/>);
+
+        // Wait for async data to render
+        const list = await screen.findByRole('list');
+
+        const items = within(list).getAllByRole('listitem');
+
+        expect(items).toHaveLength(2);
+        expect(items[0]).toHaveTextContent('First Task');
+        expect(items[1]).toHaveTextContent('Second Task');
+    });
+
+    it('should show multiple tasks and find the first task', async () => {
+        render(<TaskPage/>);
+
+        // Wait for async data to render
+        const list = await screen.findByRole('list');
+
+        const items = within(list).getAllByRole('listitem');
+
+        expect(items).toHaveLength(2);
+
+        const firstItem = await within(list).findByLabelText('Task 1');
+        expect(firstItem).toBeInTheDocument();
+    });
+
 });

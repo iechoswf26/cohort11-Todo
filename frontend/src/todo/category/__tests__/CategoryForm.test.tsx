@@ -101,10 +101,10 @@ describe('Category Form', () => {
 
             const errorMsg = screen.getByText(/label is required\./i);
 
-            await waitFor(() => {
+//            waitFor(() => {
                 expect(screen.getByText(/label is required\./i)).toBeInTheDocument();
                 expect(errorMsg).toHaveClass('text-red-500');
-            });
+//            });
         });
     });
 });

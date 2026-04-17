@@ -21,4 +21,18 @@ describe('Task Item', () => {
       screen.getByText('First Task', { exact: false }),
     ).toBeInTheDocument();
   });
+
+  it('should display delete button ', () => {
+    const category: Category = {id:'1', label:'testing'}
+    const task1: Task = {
+      id: 1,
+      title: 'First Task',
+      description: 'get task component built.',
+      category: category,
+    };
+    render(<TaskItem initialTask={task1} />);
+
+    expect(screen.getByRole('button', {name: /delete/i})).toBeInTheDocument();
+
+  });
 });

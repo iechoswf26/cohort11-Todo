@@ -17,6 +17,10 @@ export const TaskPage = () => {
         }
     };
 
+    const handleDelete = (id: number) => {
+        deleteTask(id).then(refreshData);
+    }
+
     useEffect(() => {
         refreshData();
     }, []);
@@ -31,12 +35,15 @@ export const TaskPage = () => {
                     <li>No Tasks found.</li>
                 )}
             </ul>
-            <button onClick={() => setIsModalOpen(true)} className="rounded-lg bg-blue-500 mx-auto px-4 py-2 my-auto text-sm text-white hover:bg-blue-700">Add Task</button>
+            <button onClick={() => setIsModalOpen(true)}
+                    className="rounded-lg bg-blue-500 mx-auto px-4 py-2 my-auto text-sm text-white hover:bg-blue-700">Add
+                Task
+            </button>
 
             <TaskForm isOpen={isModalOpen}
                       onClose={() => setIsModalOpen(false)}
                       onSuccess={refreshData}
-                      />
+            />
         </>
     );
 };
