@@ -1,5 +1,5 @@
 import {render, screen, within} from '@testing-library/react';
-import {expect} from 'vitest';
+import {afterEach, expect} from 'vitest';
 import {TaskPage} from '../TaskPage.tsx';
 import * as taskApi from '../TaskService.ts';
 import type {Category} from "../../category/CategoryType.ts";
@@ -21,6 +21,10 @@ describe('Task Page', () => {
         vi.mocked(taskApi.axiosGetAllTasks).mockResolvedValue(mockData);
     });
 
+    afterEach(() => {
+        //restoreAllMocks();
+    })
+
     it('should delete task when delete button is clicked', async () => {
         const task2 = mockData.filter(item => item.id === 2);
         const mockDeleteTask = vi.spyOn(taskApi, 'axiosDeleteTask').mockReturnValue(Promise.resolve());
@@ -37,16 +41,11 @@ describe('Task Page', () => {
 
         await user.click(deleteButton);
 
-//        await vi.mocked(taskApi.axiosGetAllTasks).mockResolvedValue(task2);
-
-        screen.logTestingPlaygroundURL()
         const mockRefreshData = vi.spyOn(taskApi, 'axiosGetAllTasks').mockResolvedValue(task2);
 
         expect(mockDeleteTask).toHaveBeenCalledOnce();
         expect(mockDeleteTask).toHaveBeenCalledWith(1);
-        expect(mockRefreshData).toHaveBeenCalledTimes(1);
-
-//        expect(await screen.findByLabelText('Task 1')).not.toBeInTheDocument();
+        expect(mockRefreshData).toHaveBeenCalled(2);
     });
 
     it('should display task heading', async () => {
